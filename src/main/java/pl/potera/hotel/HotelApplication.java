@@ -5,8 +5,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.repository.CrudRepository;
+import pl.potera.hotel.model.request.ReservationRequest;
 import pl.potera.hotel.repository.RoomTypesRepository;
 import pl.potera.hotel.repository.RoomsRepository;
+import pl.potera.hotel.service.ReservationService;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class HotelApplication {
@@ -16,10 +20,14 @@ public class HotelApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(RoomTypesRepository roomTypesRepository, RoomsRepository roomsRepository) {
+	CommandLineRunner init(RoomTypesRepository roomTypesRepository, RoomsRepository roomsRepository,
+						   ReservationService reservationService) {
 		return args -> {
 			printAll(roomTypesRepository);
 			printAll(roomsRepository);
+			reservationService.save(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
+			reservationService.save(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
+			reservationService.save(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
 		};
 	}
 

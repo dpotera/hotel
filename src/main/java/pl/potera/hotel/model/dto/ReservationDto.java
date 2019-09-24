@@ -1,7 +1,6 @@
 package pl.potera.hotel.model.dto;
 
 import lombok.Data;
-import pl.potera.hotel.model.Room;
 import pl.potera.hotel.model.User;
 
 import java.time.LocalDate;
@@ -14,7 +13,7 @@ public class ReservationDto {
 
     private User user;
 
-    private Room room;
+    private RoomDto room;
 
     private int numberOfPeople;
 

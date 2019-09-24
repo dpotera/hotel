@@ -10,3 +10,5 @@ insert into room (name, room_type_id) values
   ('pok.2-1', 2),
   ('pok.2-2', 2),
   ('pok.2-3', 3);
+
+insert into user (id, name) values (1, 'test');
