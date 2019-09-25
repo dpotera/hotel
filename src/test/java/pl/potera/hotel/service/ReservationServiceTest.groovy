@@ -60,7 +60,7 @@ class ReservationServiceTest extends Specification {
 
     def prepareReservationRequest(long userId) {
         def startDate = LocalDate.parse('2019-09-01')
-        def endDate = LocalDate.parse('2019-09-05')
+        def endDate = LocalDate.parse('2019-09-06')
         def numberOfPeople = 2
         new ReservationRequest(userId, numberOfPeople, startDate, endDate)
     }
