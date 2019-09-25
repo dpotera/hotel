@@ -18,8 +18,12 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping
-    public List<ReservationDto> get() {
-        return reservationService.findAll();
+    public List<ReservationDto> get(@RequestParam(required = false) String roomNumber) {
+        if (roomNumber == null || roomNumber.isEmpty()) {
+            return reservationService.findAll();
+        } else {
+            return reservationService.getForRoom(Long.parseLong(roomNumber));
+        }
     }
 
     @GetMapping("{uuid}")

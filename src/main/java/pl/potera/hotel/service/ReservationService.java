@@ -40,7 +40,7 @@ public class ReservationService {
         return modelMapper.map(reservation, ReservationDto.class);
     }
 
-    public List<ReservationDto> getByRoomId(long id) {
+    public List<ReservationDto> getForRoom(long id) {
         return mapToDtos(repository.findAllByRoomId(id));
     }
 
