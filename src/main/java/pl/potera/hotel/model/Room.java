@@ -31,7 +31,7 @@ public class Room {
     @JoinColumn(name = "room_type_id")
     private RoomType roomType;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "room_id")
     private Set<Reservation> reservations;
 }

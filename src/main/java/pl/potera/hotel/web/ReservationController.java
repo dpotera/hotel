@@ -22,13 +22,18 @@ public class ReservationController {
         return reservationService.findAll();
     }
 
-    @GetMapping("/{uuid}")
-    public ReservationDto getById(@RequestParam UUID uuid) {
+    @GetMapping("{uuid}")
+    public ReservationDto getById(@PathVariable UUID uuid) {
         return reservationService.get(uuid);
     }
 
     @PostMapping
     public ReservationDto create(@Valid @RequestBody ReservationRequest reservationRequest) {
         return reservationService.create(reservationRequest);
+    }
+
+    @DeleteMapping("{uuid}")
+    public void delete(@PathVariable UUID uuid) {
+        reservationService.delete(uuid);
     }
 }

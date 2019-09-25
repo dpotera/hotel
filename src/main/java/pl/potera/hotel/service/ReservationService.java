@@ -29,49 +29,67 @@ public class ReservationService {
     private final RoomsRepository roomsRepository;
 
     public List<ReservationDto> findAll() {
-        return repository.findAll().stream()
-                .map(reservation -> modelMapper.map(reservation, ReservationDto.class))
-                .collect(Collectors.toList());
+        return mapToDtos(repository.findAll());
     }
 
     public ReservationDto create(ReservationRequest reservationRequest) {
-        Optional<User> user = usersRepository.findById(reservationRequest.getUserId());
-        if (user.isPresent()) {
-            Optional<Room> room = getRoom(reservationRequest);
-            if (room.isPresent()) {
-                Reservation reservation = new Reservation(
-                        UUID.randomUUID(),
-                        user.get(),
-                        room.get(),
-                        reservationRequest.getNumberOfPeople(),
-                        reservationRequest.getStartDate(),
-                        reservationRequest.getEndDate());
-                repository.save(reservation);
-                return modelMapper.map(reservation, ReservationDto.class);
-            } else {
-                throw new NoRoomsAvailableException();
-            }
-        } else {
-            throw new UserNotFoundException();
-        }
+        User user = getUser(reservationRequest.getUserId());
+        Room room = getRoom(reservationRequest);
+        Reservation reservation = buildReservation(reservationRequest, user, room);
+        repository.save(reservation);
+        return modelMapper.map(reservation, ReservationDto.class);
     }
 
-    private Optional<Room> getRoom(ReservationRequest reservationRequest) {
-        List<Room> availableRooms = roomsRepository.findAvailableRooms(
-                reservationRequest.getStartDate(),
-                reservationRequest.getEndDate(),
-                reservationRequest.getNumberOfPeople()
-        );
-        if (availableRooms.size() > 0) {
-            return Optional.of(availableRooms.get(0));
-        } else {
-            return Optional.empty();
-        }
+    public List<ReservationDto> getByRoomId(long id) {
+        return mapToDtos(repository.findAllByRoomId(id));
     }
 
     public ReservationDto get(UUID id) {
         return repository.findById(id)
                 .map(reservation -> modelMapper.map(reservation, ReservationDto.class))
                 .get();
+    }
+
+    public void delete(UUID id) {
+        repository.deleteById(id);
+    }
+
+    private User getUser(long userId) {
+        Optional<User> user = usersRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    private Room getRoom(ReservationRequest reservationRequest) {
+        List<Room> availableRooms = roomsRepository.findAvailableRooms(
+                reservationRequest.getStartDate(),
+                reservationRequest.getEndDate(),
+                reservationRequest.getNumberOfPeople()
+        );
+        if (availableRooms.size() > 0) {
+            return availableRooms.get(0);
+        } else {
+            throw new NoRoomsAvailableException();
+        }
+    }
+
+    private Reservation buildReservation(ReservationRequest reservationRequest, User user, Room room) {
+        return Reservation.builder()
+                .id(UUID.randomUUID())
+                .user(user)
+                .room(room)
+                .numberOfPeople(reservationRequest.getNumberOfPeople())
+                .startDate(reservationRequest.getStartDate())
+                .endDate(reservationRequest.getEndDate())
+                .build();
+    }
+
+    private List<ReservationDto> mapToDtos(List<Reservation> reservations) {
+        return reservations.stream()
+                .map(reservation -> modelMapper.map(reservation, ReservationDto.class))
+                .collect(Collectors.toList());
     }
 }

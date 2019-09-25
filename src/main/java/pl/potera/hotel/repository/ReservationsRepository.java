@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface ReservationsRepository extends CrudRepository<Reservation, UUID> {
 
     List<Reservation> findAll();
+    List<Reservation> findAllByRoomId(long id);
 }
