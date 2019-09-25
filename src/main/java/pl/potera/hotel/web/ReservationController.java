@@ -1,13 +1,14 @@
 package pl.potera.hotel.web;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.potera.hotel.model.dto.ReservationDto;
+import pl.potera.hotel.model.request.ReservationRequest;
 import pl.potera.hotel.service.ReservationService;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/reservations")
@@ -19,5 +20,15 @@ public class ReservationController {
     @GetMapping
     public List<ReservationDto> get() {
         return reservationService.findAll();
+    }
+
+    @GetMapping("/{uuid}")
+    public ReservationDto getById(@RequestParam UUID uuid) {
+        return reservationService.get(uuid);
+    }
+
+    @PostMapping
+    public ReservationDto create(@Valid @RequestBody ReservationRequest reservationRequest) {
+        return reservationService.create(reservationRequest);
     }
 }

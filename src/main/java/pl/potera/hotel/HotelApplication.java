@@ -25,9 +25,9 @@ public class HotelApplication {
 		return args -> {
 			printAll(roomTypesRepository);
 			printAll(roomsRepository);
-			reservationService.save(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
-			reservationService.save(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
-			reservationService.save(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
+			reservationService.create(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
+			reservationService.create(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
+			reservationService.create(new ReservationRequest(1, 2, LocalDate.parse("2019-05-01"), LocalDate.parse("2019-05-05")));
 		};
 	}
 

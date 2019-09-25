@@ -13,6 +13,6 @@ public interface RoomsRepository extends CrudRepository<Room, Long> {
             "rt.capacity >= :numberOfPeople AND r NOT IN (" +
             "SELECT re.room FROM Reservation re WHERE " +
             "re.startDate <= :endDate OR re.endDate >= :startDate" +
-            ") ORDER BY rt.capacity DESC")
+            ") ORDER BY rt.capacity ASC")
     List<Room> findAvailableRooms(LocalDate startDate, LocalDate endDate, int numberOfPeople);
 }

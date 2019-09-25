@@ -30,13 +30,10 @@ class ReservationServiceTest extends Specification {
         )
     }
 
-    def "FindAll"() {
-    }
-
-    def "should save reservation"() {
+    def "should create reservation"() {
         given:
         def user = prepareUser()
-        def room1 = prepareRoom()
+        def room1 = prepareRoom(1, 4)
         def reservationRequest = prepareReservationRequest(user.id)
         usersRepository.findById(user.id) >> Optional.of(user)
         roomsRepository.findAvailableRooms(
@@ -44,7 +41,7 @@ class ReservationServiceTest extends Specification {
         ) >> [ room1 ]
 
         when:
-        def reservationDto = reservationService.save(reservationRequest)
+        def reservationDto = reservationService.create(reservationRequest)
 
         then:
         reservationDto.id != null
@@ -65,8 +62,8 @@ class ReservationServiceTest extends Specification {
         new ReservationRequest(userId, numberOfPeople, startDate, endDate)
     }
 
-    def prepareRoom() {
-        return new Room(1, "test room 1", new RoomType(1, "small", 4), [] as Set)
+    def prepareRoom(long id, int capacity) {
+        return new Room(id, "test room " + id, new RoomType(1, "test room type", capacity), [] as Set)
     }
 
     def prepareUser() {
