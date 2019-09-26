@@ -56,11 +56,7 @@ public class ReservationService {
 
     private User getUser(long userId) {
         Optional<User> user = usersRepository.findById(userId);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new UserNotFoundException();
-        }
+        return user.orElseThrow(UserNotFoundException::new);
     }
 
     private Room getRoom(ReservationRequest reservationRequest) {

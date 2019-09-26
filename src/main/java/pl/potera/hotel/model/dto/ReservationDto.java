@@ -1,17 +1,20 @@
 package pl.potera.hotel.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import pl.potera.hotel.model.User;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReservationDto {
 
     private UUID id;
 
-    private User user;
+    private UserDto user;
 
     private RoomDto room;
 

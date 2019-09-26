@@ -1,0 +1,7 @@
+applications:
+  - name: hotel
+    memory: 1G
+    instances: 1
+    path: target/hotel-0.0.1-SNAPSHOT.jar
+    services:
+      - config-server

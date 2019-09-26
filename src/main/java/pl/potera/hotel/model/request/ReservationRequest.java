@@ -6,22 +6,22 @@ import lombok.Data;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 public class ReservationRequest {
 
-    @NotNull
+    @NotNull(message = "User id must be provided")
     private long userId;
 
-    @Min(1)
-    @Max(8)
+    @Size(min = 1, max = 8, message = "Number of people must be at least 1 and at most 8")
     private int numberOfPeople;
 
-    @NotNull
+    @NotNull(message = "Start date must be provided")
     private LocalDate startDate;
 
-    @NotNull
+    @NotNull(message = "End date must be provided")
     private LocalDate endDate;
 }
