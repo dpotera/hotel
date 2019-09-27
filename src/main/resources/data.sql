@@ -14,6 +14,6 @@ insert into room (id, name, room_type_id) values
 insert into user (id, name) values (1, 'test');
 
 insert into reservation (id, user_id, room_id, number_of_people, start_date, end_date) values
-  (random_uuid(), 1, 1, 2, '2019-09-01', '2019-09-05'),
-  (random_uuid(), 1, 2, 2, '2019-09-01', '2019-09-05'),
-  (random_uuid(), 1, 4, 5, '2019-09-01', '2019-09-05');
+  (random_uuid(), 1, 1, 2, '2019-09-10', '2019-09-15'),
+  (random_uuid(), 1, 2, 2, '2019-09-10', '2019-09-15'),
+  (random_uuid(), 1, 4, 5, '2019-09-10', '2019-09-15');

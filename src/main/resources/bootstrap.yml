@@ -1,3 +1,6 @@
 spring:
   application:
     name: hotel
+kafka:
+  topic: reservations
+  bootstrap-servers: localhost:9093, localhost:9094

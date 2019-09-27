@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import pl.potera.hotel.exception.NoRoomsAvailableException;
 import pl.potera.hotel.exception.UserNotFoundException;
+import pl.potera.hotel.kafka.KafkaClient;
 import pl.potera.hotel.model.Reservation;
 import pl.potera.hotel.model.Room;
 import pl.potera.hotel.model.User;
@@ -28,6 +29,7 @@ public class ReservationService {
     private final ReservationsRepository repository;
     private final UsersRepository usersRepository;
     private final RoomsRepository roomsRepository;
+    private final KafkaClient kafkaClient;
 
     public List<ReservationDto> findAll() {
         return mapToDtos(repository.findAll());
@@ -38,7 +40,9 @@ public class ReservationService {
         Room room = getRoom(reservationRequest);
         Reservation reservation = buildReservation(reservationRequest, user, room);
         repository.save(reservation);
-        return modelMapper.map(reservation, ReservationDto.class);
+        ReservationDto reservationDto = modelMapper.map(reservation, ReservationDto.class);
+        kafkaClient.sendMessage(reservationDto.getId().toString(), reservationDto.getRoom().getRoomType().getName());
+        return reservationDto;
     }
 
     public List<ReservationDto> getForRoom(long id) {
@@ -75,7 +79,6 @@ public class ReservationService {
 
     private Reservation buildReservation(ReservationRequest reservationRequest, User user, Room room) {
         return Reservation.builder()
-                .id(UUID.randomUUID())
                 .user(user)
                 .room(room)
                 .numberOfPeople(reservationRequest.getNumberOfPeople())
